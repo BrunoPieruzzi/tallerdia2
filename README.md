@@ -91,6 +91,7 @@ El `access_token` expira en **300 segundos**.
 Desde la raíz del proyecto:
 
 ```bash
+export JWT_SECRET_KEY="reemplaza-esta-clave-por-una-segura"
 docker compose up --build
 ```
 

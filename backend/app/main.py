@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
 import os
+import secrets
 
 import jwt
 from fastapi import FastAPI, HTTPException
@@ -7,7 +8,7 @@ from pydantic import BaseModel
 
 ACCESS_TOKEN_EXPIRE_SECONDS = int(os.getenv("ACCESS_TOKEN_EXPIRE_SECONDS", "300"))
 REFRESH_TOKEN_EXPIRE_SECONDS = int(os.getenv("REFRESH_TOKEN_EXPIRE_SECONDS", "3600"))
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-this-secret-in-production")
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY") or secrets.token_urlsafe(48)
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 VALID_USERNAME = os.getenv("AUTH_USERNAME", "admin")
 VALID_PASSWORD = os.getenv("AUTH_PASSWORD", "admin123")
@@ -38,7 +39,10 @@ def _create_token(subject: str, token_type: str, expires_in_seconds: int) -> str
 
 @app.post("/token")
 def create_token(credentials: TokenRequest):
-    if credentials.username != VALID_USERNAME or credentials.password != VALID_PASSWORD:
+    if not (
+        secrets.compare_digest(credentials.username, VALID_USERNAME)
+        and secrets.compare_digest(credentials.password, VALID_PASSWORD)
+    ):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     access_token = _create_token(VALID_USERNAME, "access", ACCESS_TOKEN_EXPIRE_SECONDS)
