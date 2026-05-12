@@ -79,7 +79,7 @@ El `access_token` expira en **300 segundos**.
 
 ## Variables de entorno
 
-- `JWT_SECRET_KEY`: clave secreta para firmar JWT (default: `change-this-secret-in-production`)
+- `JWT_SECRET_KEY`: **obligatoria**, clave secreta para firmar JWT
 - `JWT_ALGORITHM`: algoritmo JWT (default: `HS256`)
 - `AUTH_USERNAME`: usuario válido para login (default: `admin`)
 - `AUTH_PASSWORD`: password válido para login (default: `admin123`)
@@ -97,4 +97,4 @@ docker compose up --build
 
 La API quedará disponible en `http://localhost:8000`.
 
-> Para entornos productivos, define un `JWT_SECRET_KEY` seguro mediante variables de entorno y no uses el valor por defecto.
+> Define siempre un `JWT_SECRET_KEY` seguro mediante variables de entorno.

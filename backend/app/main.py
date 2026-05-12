@@ -8,10 +8,13 @@ from pydantic import BaseModel
 
 ACCESS_TOKEN_EXPIRE_SECONDS = int(os.getenv("ACCESS_TOKEN_EXPIRE_SECONDS", "300"))
 REFRESH_TOKEN_EXPIRE_SECONDS = int(os.getenv("REFRESH_TOKEN_EXPIRE_SECONDS", "3600"))
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY") or secrets.token_urlsafe(48)
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 VALID_USERNAME = os.getenv("AUTH_USERNAME", "admin")
 VALID_PASSWORD = os.getenv("AUTH_PASSWORD", "admin123")
+
+if not JWT_SECRET_KEY:
+    raise RuntimeError("JWT_SECRET_KEY must be set")
 
 
 class TokenRequest(BaseModel):
