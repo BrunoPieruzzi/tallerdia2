@@ -81,6 +81,10 @@ El `access_token` expira en **300 segundos**.
 
 - `JWT_SECRET_KEY`: clave secreta para firmar JWT (default: `change-this-secret-in-production`)
 - `JWT_ALGORITHM`: algoritmo JWT (default: `HS256`)
+- `AUTH_USERNAME`: usuario válido para login (default: `admin`)
+- `AUTH_PASSWORD`: password válido para login (default: `admin123`)
+- `ACCESS_TOKEN_EXPIRE_SECONDS`: duración del access token (default: `300`)
+- `REFRESH_TOKEN_EXPIRE_SECONDS`: duración del refresh token (default: `3600`)
 
 ## Despliegue con Docker
 
@@ -91,3 +95,5 @@ docker compose up --build
 ```
 
 La API quedará disponible en `http://localhost:8000`.
+
+> Para entornos productivos, define un `JWT_SECRET_KEY` seguro mediante variables de entorno y no uses el valor por defecto.

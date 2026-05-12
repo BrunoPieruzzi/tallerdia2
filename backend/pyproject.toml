@@ -2,7 +2,7 @@
 name = "jwt-fastapi-backend"
 version = "0.1.0"
 description = "FastAPI JWT example with login and token refresh endpoints"
-authors = ["BrunoPieruzzi <bruno@example.com>"]
+authors = ["BrunoPieruzzi"]
 readme = "../README.md"
 packages = [{ include = "app" }]
 

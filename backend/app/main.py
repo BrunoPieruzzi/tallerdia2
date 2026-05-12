@@ -5,12 +5,12 @@ import jwt
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-ACCESS_TOKEN_EXPIRE_SECONDS = 300
-REFRESH_TOKEN_EXPIRE_SECONDS = 3600
+ACCESS_TOKEN_EXPIRE_SECONDS = int(os.getenv("ACCESS_TOKEN_EXPIRE_SECONDS", "300"))
+REFRESH_TOKEN_EXPIRE_SECONDS = int(os.getenv("REFRESH_TOKEN_EXPIRE_SECONDS", "3600"))
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-this-secret-in-production")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
-VALID_USERNAME = "admin"
-VALID_PASSWORD = "admin123"
+VALID_USERNAME = os.getenv("AUTH_USERNAME", "admin")
+VALID_PASSWORD = os.getenv("AUTH_PASSWORD", "admin123")
 
 
 class TokenRequest(BaseModel):
@@ -56,7 +56,7 @@ def create_token(credentials: TokenRequest):
 def refresh_token(payload: RefreshRequest):
     try:
         decoded = jwt.decode(payload.refresh_token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-    except jwt.PyJWTError as exc:
+    except jwt.exceptions.InvalidTokenError as exc:
         raise HTTPException(status_code=401, detail="Invalid refresh token") from exc
 
     if decoded.get("type") != "refresh" or decoded.get("sub") != VALID_USERNAME:
