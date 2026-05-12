@@ -1,0 +1,11 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tallerdia2-backend
+    ports:
+      - "8000:8000"
+    environment:
+      JWT_SECRET_KEY: "change-this-secret-in-production"
+      JWT_ALGORITHM: "HS256"
